@@ -24,9 +24,10 @@ export class SigninComponent implements OnInit {
       userName: ['', Validators.required],
       password: ['', Validators.required]
     });
+    this.setFocusUserName();
   }
 
-  login() {
+  public login(): void {
     
 
     const userName: string = this.loginForm.get('userName').value;
@@ -40,9 +41,13 @@ export class SigninComponent implements OnInit {
                                 console.log(err.error.message);
                                 this.loginForm.reset();
 
-                                this.platformDetectorService.isPlatFormBrowser() &&
-                                this.userNameInput.nativeElement.focus();
+                                this.setFocusUserName();
                                 alert('Username or password invalid!');
                             });
+  }
+
+  private setFocusUserName(): void {
+    this.platformDetectorService.isPlatFormBrowser() &&
+    this.userNameInput.nativeElement.focus();
   }
 }

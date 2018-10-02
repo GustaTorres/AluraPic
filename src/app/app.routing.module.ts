@@ -7,16 +7,24 @@ import { PhotoFormComponent } from './photos/photo-form/photo-form.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { PhotoListResolver } from './photos/photo-list/photo-list.resolver';
 import { SignupComponent } from './home/signup/signup.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
     { 
         path: '', 
-        component: SigninComponent,
-        canActivate: [AuthGuard]
-    },
-    { 
-        path: 'signup', 
-        component: SignupComponent
+        component: HomeComponent,
+        canActivate: [AuthGuard],
+        children: [
+            { 
+                path: '', 
+                component: SigninComponent,
+            },
+            { 
+                path: 'signup', 
+                component: SignupComponent
+            },
+        
+        ]
     },
     { 
         path: 'user/:userName', 
@@ -36,7 +44,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [ RouterModule.forRoot(routes) ],
+    imports: [ RouterModule.forRoot(routes, {useHash: true}) ],
     exports: [ RouterModule ]
 })
 export class AppRoutingModule { }

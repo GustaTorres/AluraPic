@@ -1,10 +1,11 @@
-import { SignupService } from './signup.service';
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { lowerCaseValidator } from '../../shared/validators/lowe-case.validator';
-import { UserNotTakenValidatorService } from './user-not-taken.validator.service';
-import { NewUser } from './new-user';
+import { PlatformDetectorService } from './../../core/platform-detector/platform-detector.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { lowerCaseValidator } from '../../shared/validators/lowe-case.validator';
+import { NewUser } from './new-user';
+import { SignupService } from './signup.service';
+import { UserNotTakenValidatorService } from './user-not-taken.validator.service';
 
 @Component({
   selector: 'ap-signup',
@@ -15,10 +16,14 @@ export class SignupComponent implements OnInit {
 
   public signupForm: FormGroup;
 
+  @ViewChild('emailInput')
+  public emailInput: ElementRef<HTMLInputElement>;
+
   constructor(private formBuilder: FormBuilder,
               private userNotTakenValidatorService: UserNotTakenValidatorService,
               private signUpService: SignupService,
-              private router: Router) { }
+              private router: Router,
+              private platformDetectorService: PlatformDetectorService) { }
   ngOnInit() {
       this.signupForm = this.formBuilder.group({
         email: ['', 
@@ -51,6 +56,7 @@ export class SignupComponent implements OnInit {
             ]   
       ]
     });
+    this.setFocusEmail();
   }
 
   public signUp(): void {
@@ -62,5 +68,10 @@ export class SignupComponent implements OnInit {
           }, err => {
             console.log(err);
           });
+  }
+
+  private setFocusEmail(): void {
+    this.platformDetectorService.isPlatFormBrowser() &&
+    this.emailInput.nativeElement.focus();
   }
 }
