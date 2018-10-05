@@ -1,8 +1,8 @@
-import { PlatformDetectorService } from './../../core/platform-detector/platform-detector.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { lowerCaseValidator } from '../../shared/validators/lowe-case.validator';
+import { PlatformDetectorService } from './../../core/platform-detector/platform-detector.service';
 import { NewUser } from './new-user';
 import { SignupService } from './signup.service';
 import { UserNotTakenValidatorService } from './user-not-taken.validator.service';
@@ -10,7 +10,8 @@ import { UserNotTakenValidatorService } from './user-not-taken.validator.service
 @Component({
   selector: 'ap-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  styleUrls: ['./signup.component.css'],
+  providers: [UserNotTakenValidatorService]
 })
 export class SignupComponent implements OnInit {
 
