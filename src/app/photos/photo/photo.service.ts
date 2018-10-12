@@ -14,10 +14,19 @@ export class PhotoService {
        return this.http.get<Photo[]>(`${API}/${userName}/photos`);
     }
 
-    public listFromUserPaginated(userName: string, page: number) {
+    public listFromUserPaginated(userName: string, page: number): Observable<Photo[]> {
         const params: HttpParams = new HttpParams().append('page',page.toString());
 
         return this.http.get<Photo[]>(`${API}/${userName}/photos`,{ params });
+    }
+
+    public upload(description : string, allowComments: boolean, file: File ): Observable<any> {
+        const formData: FormData = new FormData();
+        formData.append('description',description);
+        formData.append('allowComments',allowComments.toString());
+        formData.append('imageFile',file);
+
+        return this.http.post(`${API}/photos/upload`,formData);
     }
 
 }
