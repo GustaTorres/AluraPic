@@ -8,6 +8,11 @@
       <small>
         <p class="text-left break-word">{{photo.description}}</p>
         <div class="text-left mb-4">
+          <div apShowIfLogged class="mr-2 pull-left">
+            <i (click)="like(photo)"
+               class="fa fa-heart-o fa-2x">
+            </i>{{photo.likes}}
+          </div>
           <i class="fa fa-comment-o fa-2x mr-2 ml-2"></i>{{photo.comments}}
           <i apPhotoOwnerOnly [ownedPhoto]="photo" 
              (click)="remove()" 
@@ -15,9 +20,10 @@
         </div>
         <hr>
       </small>
-      <ap-photo-comments 
+      <ap-photo-comments
         *ngIf="photo.allowComments else warning"
-        [photoId]="photo.id">
+        [photoId]="photo.id"
+        (photoEvent)="photo$ = $event">
       </ap-photo-comments>
       <ng-template #warning>
         User has disabled comments for this photo.

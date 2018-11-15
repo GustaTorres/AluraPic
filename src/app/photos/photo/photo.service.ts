@@ -1,10 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { environment } from './../../../environments/environment';
 import { Photo } from './photo';
 import { PhotoComment } from './photo-comment';
 
-const API = 'http://localhost:3000';
+const API_URL = environment.apiUrl;
 
 @Injectable({providedIn: 'root'})
 export class PhotoService {
@@ -12,13 +14,13 @@ export class PhotoService {
     constructor(private http: HttpClient) {}
 
     public listFromUser(userName: string): Observable<Photo[]> {
-       return this.http.get<Photo[]>(`${API}/${userName}/photos`);
+       return this.http.get<Photo[]>(`${API_URL}/${userName}/photos`);
     }
 
     public listFromUserPaginated(userName: string, page: number): Observable<Photo[]> {
         const params: HttpParams = new HttpParams().append('page',page.toString());
 
-        return this.http.get<Photo[]>(`${API}/${userName}/photos`,{ params });
+        return this.http.get<Photo[]>(`${API_URL}/${userName}/photos`,{ params });
     }
 
     public upload(description : string, allowComments: boolean, file: File ): Observable<any> {
@@ -27,23 +29,32 @@ export class PhotoService {
         formData.append('allowComments',allowComments.toString());
         formData.append('imageFile',file);
 
-        return this.http.post(`${API}/photos/upload`,formData);
+        return this.http.post(`${API_URL}/photos/upload`,formData);
     }
 
     public findById(photoId: number): Observable<Photo> {
-        return this.http.get<Photo>(`${API}/photos/${photoId}`);
+        return this.http.get<Photo>(`${API_URL}/photos/${photoId}`);
     }
 
     public getComments(photoId: number): Observable<PhotoComment[]> {
-        return this.http.get<PhotoComment[]>(`${API}/photos/${photoId}/comments`);
+        return this.http.get<PhotoComment[]>(`${API_URL}/photos/${photoId}/comments`);
     }
 
     public addComments(photoId: number, commentText: string) {
-        return this.http.post(`${API}/photos/${photoId}/comments`, { commentText });
+        return this.http.post(`${API_URL}/photos/${photoId}/comments`, { commentText });
     }
 
     public removePhoto(photoId: number) {
-        return this.http.delete(`${API}/photos/${photoId}`);
+        return this.http.delete(`${API_URL}/photos/${photoId}`);
     }
 
+    public like(photoId: number) {
+        return this.http.post(
+            `${API_URL}/photos/${photoId}/like`, {}, {observe: 'response'}
+            )
+            .pipe(map(res => true))
+            .pipe(catchError(err => {
+               return err.status === 304 ? of(false) : throwError(err);
+            }));
+    }
 }
