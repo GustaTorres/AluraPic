@@ -7,26 +7,32 @@ import { NgModule } from '@angular/core';
 
 
 const routes: Routes = [
-    { 
-        path: '', 
-        component: HomeComponent,
-        canActivate: [LoginGuard],
-        children: [
-            { 
-                path: '', 
-                component: SigninComponent,
-            },
-            { 
-                path: 'signup', 
-                component: SignupComponent
-            },
-        
-        ]
-    }
+  {
+    path: '',
+    component: HomeComponent,
+    canActivate: [LoginGuard],
+    children: [
+      {
+        path: '',
+        component: SigninComponent,
+        data: {
+          title: 'Sign in'
+        }
+      },
+      {
+        path: 'signup',
+        component: SignupComponent,
+        data: {
+          title: 'Sign up'
+        }
+      },
+
+    ]
+  }
 ];
 
 @NgModule({
-    imports: [ RouterModule.forChild(routes) ],
-    exports: [ RouterModule ]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
 export class HomeRoutingModule { }

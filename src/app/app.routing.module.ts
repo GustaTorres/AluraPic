@@ -8,43 +8,54 @@ import { PhotoListComponent } from './photos/photo-list/photo-list.component';
 import { PhotoListResolver } from './photos/photo-list/photo-list.resolver';
 
 const routes: Routes = [
-    {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'home'
-    },
-    {
-        path:'home',
-        loadChildren: './home/home.module#HomeModule'
-    },
-    { 
-        path: 'user/:userName', 
-        component: PhotoListComponent,
-        resolve: {
-            photos: PhotoListResolver
-        } 
-    },
-    { 
-        path: 'p/add', 
-        component: PhotoFormComponent,
-        canActivate: [AuthGuard] 
-    },
-    { 
-        path: 'p/:photoId', 
-        component: PhotoDetailsComponent
-    },
-    {
-        path: 'not-found',
-        component: NotFoundComponent
-    },
-    { 
-        path: '**', 
-        redirectTo: 'not-found' 
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'home'
+  },
+  {
+    path: 'home',
+    loadChildren: './home/home.module#HomeModule'
+  },
+  {
+    path: 'user/:userName',
+    component: PhotoListComponent,
+    resolve: {
+      photos: PhotoListResolver
+    }, data: {
+      title: 'Timeline'
     }
+  },
+  {
+    path: 'p/add',
+    component: PhotoFormComponent,
+    canActivate: [AuthGuard],
+    data: {
+      title: 'Photo upload'
+    }
+  },
+  {
+    path: 'p/:photoId',
+    component: PhotoDetailsComponent,
+    data: {
+      title: 'Photo detail'
+    }
+  },
+  {
+    path: 'not-found',
+    component: NotFoundComponent,
+    data: {
+      title: 'Not found'
+    }
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found'
+  }
 ];
 
 @NgModule({
-    imports: [ RouterModule.forRoot(routes, {useHash: true}) ],
-    exports: [ RouterModule ]
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }
