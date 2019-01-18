@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Photo } from './../photo/photo';
+import { LoadingService } from 'src/app/shared/components/loading/loading.service';
 
 @Component({
   selector: 'ap-photo-list',
@@ -17,12 +18,12 @@ export class PhotoListComponent implements OnInit {
   public hasMore: boolean = true;
   private currentPage: number = 1;
   private userName: string = '';
-  
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private photoService: PhotoService
-  ) {}
-  
+  ) { }
+
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       this.userName = params.userName;
@@ -31,14 +32,14 @@ export class PhotoListComponent implements OnInit {
   }
 
   public load(): void {
-    this.photoService.listFromUserPaginated(this.userName,++this.currentPage)
-          .subscribe(photos => {
-            this.filter = '';
-            this.photos = this.photos.concat(photos);
-            if(!photos.length){
-              this.hasMore = false;
-            }
-          });
+    this.photoService.listFromUserPaginated(this.userName, ++this.currentPage)
+      .subscribe(photos => {
+        this.filter = '';
+        this.photos = this.photos.concat(photos);
+        if (!photos.length) {
+          this.hasMore = false;
+        }
+      });
   }
 
 }
