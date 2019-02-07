@@ -1,3 +1,5 @@
+import { ShowIfLoggedModule } from 'src/app/shared/directives/show-if-logged/show-if-logged.module';
+import { MenuModule } from './../shared/components/menu/menu.module';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -13,7 +15,9 @@ import { LoadingModule } from '../shared/components/loading/loading.module';
     CommonModule,
     RouterModule,
     AlertModule,
-    LoadingModule
+    LoadingModule,
+    MenuModule,
+    ShowIfLoggedModule
   ],
   exports: [
     HeaderComponent,
