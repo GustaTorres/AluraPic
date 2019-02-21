@@ -38,8 +38,8 @@ export class PhotoDetailsComponent implements OnInit {
     .removePhoto(this.photoId)
     .subscribe(() => {
       this.alertService.success('Photo removed!',true);
-      this.router.navigate(['/user',this.userService.getUserName()]);
     }, err => {
+      this.router.navigate(['/user',this.userService.getUserName()],{ replaceUrl: true });
       console.log(err);
       this.alertService.warning('Could not remove the photo!');
     });

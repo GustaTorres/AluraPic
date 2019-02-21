@@ -6,6 +6,7 @@ import { PlatformDetectorService } from './../../core/platform-detector/platform
 import { NewUser } from './new-user';
 import { SignupService } from './signup.service';
 import { UserNotTakenValidatorService } from './user-not-taken.validator.service';
+import { userNamePasswordValidator } from './username-password.validator';
 
 @Component({
   selector: 'ap-signup',
@@ -56,11 +57,19 @@ export class SignupComponent implements OnInit {
               Validators.maxLength(14)
             ]   
       ]
-    });
+    }, {
+          validator: userNamePasswordValidator
+      });
+      
     this.setFocusEmail();
   }
 
   public signUp(): void {
+
+    if(this.signupForm.invalid || this.signupForm.pending) {
+      return;
+    }
+    
     const newUser: NewUser = this.signupForm.getRawValue();
     this.signUpService
           .signUp(newUser)
